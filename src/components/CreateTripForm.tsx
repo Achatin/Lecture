@@ -30,6 +30,8 @@ import { format } from 'date-fns'
 import { Checkbox } from './ui/checkbox'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card'
 import { Label } from './ui/label'
+import AddableFields from './AddableFields'
+import FormElement from './FormElement'
 
 const formSchema = z.object({
     destination_country: z.string({
@@ -78,7 +80,7 @@ const CreateTripForm: FC<CreateTripFormProps> = ({}) => {
 
                         <h4 className='text-lg font-semibold'>From</h4>
 
-                        <div className='grid grid-cols-2 items-end'>
+                        <div className='grid grid-cols-2 gap-x-4'>
                             <FormField
                             control={form.control}
                             name="start_country"
@@ -138,19 +140,9 @@ const CreateTripForm: FC<CreateTripFormProps> = ({}) => {
                             )}
                             />
 
-                            <FormField
-                            control={form.control}
-                            name="start_city"
-                            render={({ field }) => (
-                                <FormItem>
-                                <FormLabel>Location</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Name of the city or location..." {...field} />
-                                </FormControl>
-                                <FormMessage />
-                                </FormItem>
-                            )}
-                            />
+                            <FormElement form={form} name="start_city" label='Location'>
+                                <Input type="text" placeholder="Name of the city or location..." />
+                            </FormElement>
                         </div>
 
                         <Separator className="my-4" />
@@ -217,19 +209,9 @@ const CreateTripForm: FC<CreateTripFormProps> = ({}) => {
                             )}
                             />
 
-                            <FormField
-                            control={form.control}
-                            name="destination_city"
-                            render={({ field }) => (
-                                <FormItem>
-                                <FormLabel>Location</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Name of the city or location..." {...field} />
-                                </FormControl>
-                                <FormMessage />
-                                </FormItem>
-                            )}
-                            />
+                            <FormElement form={form} name="destination_city" label='Location'>
+                                <Input type="text" placeholder="Name of the city or location..." />
+                            </FormElement>
                         </div>
 
                     </AccordionContent>
@@ -243,7 +225,7 @@ const CreateTripForm: FC<CreateTripFormProps> = ({}) => {
                         control={form.control}
                         name="transport"
                         render={({ field }) => (
-                            <FormItem className='mb-4'>
+                            <FormItem className='mb-4 mx-1'>
                             <FormLabel>Transport</FormLabel>
                             <Select onValueChange={field.onChange} defaultValue={field.value}>
                                 <FormControl>
@@ -269,82 +251,32 @@ const CreateTripForm: FC<CreateTripFormProps> = ({}) => {
                         />
 
                         { ["bus", "plane", "ferry"].includes(transport) ? (
-                            <FormField
-                            control={form.control}
-                            name="travelling_agency"
-                            render={({ field }) => (
-                                <FormItem className='mb-4'>
-                                <FormLabel>Travelling agency</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Airline company, bus name, ..." {...field} />
-                                </FormControl>
-                                <FormMessage />
-                                </FormItem>
-                            )}
-                            />
+                            <FormElement form={form} name="travelling_agency" label='Travelling agency'>
+                                <Input type="text" placeholder="Airline company, bus name, ..." />
+                            </FormElement>
                         ) : (
                             null
                         )}
 
                         <FormLabel>Duration</FormLabel>
-                        <div className='flex space-x-4 mb-4 mt-2'>
-                            <FormField
-                            control={form.control}
-                            name="duration_days"
-                            render={({ field }) => (
-                                <FormItem className='w-24'>
-                                <FormControl>
-                                    <Input type="number" defaultValue={0} {...field} />
-                                </FormControl>
-                                <FormDescription>Days</FormDescription>
-                                <FormMessage />
-                                </FormItem>
-                            )}
-                            />
+                        <div className='flex space-x-4 mb-2'>
+                            <FormElement form={form} name="duration_days" description='Days'>
+                                <Input type="number" defaultValue={0} />
+                            </FormElement>
 
-                            <FormField
-                            control={form.control}
-                            name="duration_hours"
-                            render={({ field }) => (
-                                <FormItem className='w-24'>
-                                <FormControl>
-                                    <Input type="number" defaultValue={0} {...field} />
-                                </FormControl>
-                                <FormDescription>Hours</FormDescription>
-                                <FormMessage />
-                                </FormItem>
-                            )}
-                            />
+                            <FormElement form={form} name="duration_hours" description='Hours'>
+                                <Input type="number" defaultValue={0} />
+                            </FormElement>
 
-                            <FormField
-                            control={form.control}
-                            name="duration_minutes"
-                            render={({ field }) => (
-                                <FormItem className='w-24'>
-                                <FormControl>
-                                    <Input type="number" defaultValue={0} {...field} />
-                                </FormControl>
-                                <FormDescription>Minutes</FormDescription>
-                                <FormMessage />
-                                </FormItem>
-                            )}
-                            />
+                            <FormElement form={form} name="duration_minutes" description='Minutes'>
+                                <Input type="number" defaultValue={0} />
+                            </FormElement>
                         </div>
 
                         <div className='flex space-x-2'>
-                            <FormField
-                            control={form.control}
-                            name="destination_city"
-                            render={({ field }) => (
-                                <FormItem>
-                                <FormLabel>Price</FormLabel>
-                                <FormControl>
-                                    <Input type="number" defaultValue={0} {...field} />
-                                </FormControl>
-                                <FormMessage />
-                                </FormItem>
-                            )}
-                            />
+                            <FormElement form={form} name="price" label='Price'>
+                                <Input type="number" defaultValue={0} />
+                            </FormElement>
 
                             <FormField
                             control={form.control}
@@ -360,7 +292,7 @@ const CreateTripForm: FC<CreateTripFormProps> = ({}) => {
                                     </FormControl>
                                     <SelectContent>
                                         { currencies.map((currency) => {
-                                            return <SelectItem value={currency.cc}>{currency.symbol}</SelectItem>
+                                            return <SelectItem value={currency.cc}>{currency.cc} ({currency.symbol})</SelectItem>
                                         })}
                                     </SelectContent>
                                 </Select>
@@ -418,61 +350,22 @@ const CreateTripForm: FC<CreateTripFormProps> = ({}) => {
                 <AccordionItem value="item-3">
                     <AccordionTrigger className='text-lg font-semibold'>Additional info</AccordionTrigger>
                     <AccordionContent>
-                        <FormField
-                        control={form.control}
-                        name="destination_city"
-                        render={({ field }) => (
-                            <FormItem className='mb-4'>
-                            <FormLabel>Overall rating</FormLabel>
-                            <FormControl>
-                                <Input placeholder="No | Eh | Ok | Yes | Very Much" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                            </FormItem>
-                        )}
-                        />
 
-                        <FormField
-                        control={form.control}
-                        name="destination_city"
-                        render={({ field }) => (
-                            <FormItem className='my-4'>
-                            <FormLabel>Places to visit</FormLabel>
-                            <FormControl>
-                                <Input placeholder="Card" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                            </FormItem>
-                        )}
-                        />
+                        <FormElement form={form} name="rating" label='Overall rating'>
+                            <Input placeholder="No | Eh | Ok | Yes | Very Much" />
+                        </FormElement>
 
-                        <FormField
-                        control={form.control}
-                        name="tips"
-                        render={({ field }) => (
-                            <FormItem className='my-4'>
-                            <FormLabel>Helpful tips</FormLabel>
-                            <FormControl>
-                                <Input placeholder="You should know that..." {...field} />
-                            </FormControl>
-                            <FormMessage />
-                            </FormItem>
-                        )}
-                        />
+                        <FormElement form={form} name="places_2_visit" label='Places to visit'>
+                            <AddableFields placeholder='Grand Canyon'></AddableFields>
+                        </FormElement>
 
-                        <FormField
-                        control={form.control}
-                        name="destination_city"
-                        render={({ field }) => (
-                            <FormItem className='my-4'>
-                            <FormLabel>Upload a photo</FormLabel>
-                            <FormControl>
-                                <Input type="file" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                            </FormItem>
-                        )}
-                        />
+                        <FormElement form={form} name="tips" label='Helpful tips'>
+                            <AddableFields placeholder='You should know that...' maxlength={128}></AddableFields>
+                        </FormElement>
+
+                        <FormElement form={form} name="photo" label='Upload a photo'>
+                            <Input type="file" />
+                        </FormElement>
 
                         <FormField
                         control={form.control}

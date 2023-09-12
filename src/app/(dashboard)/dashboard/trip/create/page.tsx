@@ -7,7 +7,7 @@ const page: FC = () => {
     return (
         <main className='flex justify-center py-10'>
 
-            <Card className="max-w-2xl">
+            <Card className="max-w-md">
                 <div className='bg-muted w-full'>
                     <Image src="/illustrations/trip.svg" alt="Road trip illustration" width={300} height={300} className='p-10 mx-auto' />
                 </div>
