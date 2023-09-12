@@ -10,6 +10,9 @@ import FriendRequestsSidebarOption from '@/components/FriendRequestsSidebarOptio
 import { fetchRedis } from '@/helpers/redis';
 import { getFriendsByUserId } from '@/helpers/get-friends-by-user-id';
 import SidebarChatList from '@/components/SidebarChatList';
+import { Button } from '@/components/ui/button';
+import { PlusSquare } from 'lucide-react';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface LayoutProps {
     children: ReactNode
@@ -77,7 +80,16 @@ const Layout = async ({ children }: LayoutProps) => {
                             </ul>
                         </li>
 
-                        <li className='-mx-6 mt-auto flex items-center'>
+                        <li className='mt-auto'>
+                            <Link href="/dashboard/trip/create/">
+                                <Button className='w-full font-bold'>
+                                    <PlusSquare className='w-5 h-5 mx-2' />
+                                    Create a trip
+                                </Button>
+                            </Link>
+                        </li>
+
+                        <li className='-mx-6 flex items-center'>
                             <div className='flex flex-1 items-center gap-x-4 px-6 py-5 text-sm font-semibold leading-6 text-gray-900'>
                                 <div className='relative h-8 w-8 bg-gray-50'>
                                     <Image fill referrerPolicy='no-referrer' className='rounded-full' src={session.user.image || ''} alt='Your profile picture' />
@@ -94,7 +106,9 @@ const Layout = async ({ children }: LayoutProps) => {
                     </ul>
                 </nav>
         </div>
-        {children}
+        <ScrollArea className="w-full">
+            {children}
+        </ScrollArea>
     </div>
 }
 

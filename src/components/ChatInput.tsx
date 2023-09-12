@@ -4,7 +4,8 @@ import axios from 'axios';
 import { FC, useRef, useState } from 'react'
 import { toast } from 'react-hot-toast';
 import TextAreaAutosize from 'react-textarea-autosize'
-import Button from './ui/Button';
+import { Button } from './ui/button';
+import { ButtonLoading } from './ui/buttonLoading';
 
 interface ChatInputProps {
   chatPartner: User,
@@ -56,7 +57,11 @@ const ChatInput: FC<ChatInputProps> = ({chatPartner, chatId}) => {
 
         <div className='absolute right-0 bottom-0 flex justify-between py-2 pl-3 pr-2'>
             <div className='flex-shrink-0'>
-                <Button isLoading={isLoading} onClick={sendMessage} type='submit'>Post</Button>
+                {isLoading ? (
+                    <ButtonLoading></ButtonLoading>
+                ) : (
+                    <Button onClick={sendMessage} type='submit'>Post</Button>
+                )}
             </div>
         </div>
     </div>

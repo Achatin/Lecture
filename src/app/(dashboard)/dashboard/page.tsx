@@ -1,7 +1,6 @@
 import { FC } from 'react'
 import {getServerSession} from "next-auth";
 import {authOptions} from "@/lib/auth";
-import Button from "../../../components/ui/Button";
 import AddFriendButton from '@/components/AddFriendButton';
 
 const page = async ({}) => {
