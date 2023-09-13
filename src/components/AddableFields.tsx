@@ -39,7 +39,7 @@ const AddableFields: FC<AddableFieldsProps> = ({ placeholder, maxlength = 64 }) 
             ))}
             <div className='flex space-x-2'>
                 <Input type="text" value={inputValue} maxLength={maxlength} onChange={handleInputChange} placeholder={placeholder} />
-                <Button type='button' onClick={handleAddClick} className='font-bold'>+</Button>
+                <Button type='button' onClick={handleAddClick} className='text-xl font-bold'>+</Button>
             </div>
         </div>
     )

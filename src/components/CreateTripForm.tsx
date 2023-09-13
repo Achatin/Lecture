@@ -32,6 +32,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Label } from './ui/label'
 import AddableFields from './AddableFields'
 import FormElement from './FormElement'
+import { Textarea } from './ui/textarea'
+import Rating from './Rating'
 
 const formSchema = z.object({
     destination_country: z.string({
@@ -73,19 +75,19 @@ const CreateTripForm: FC<CreateTripFormProps> = ({}) => {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
 
-            <Accordion type="multiple" defaultValue="item-1" collapsible>
+            <Accordion type="single" defaultValue="item-1" collapsible>
                 <AccordionItem value="item-1">
                     <AccordionTrigger className='text-lg font-semibold'>Where did you travel?</AccordionTrigger>
                     <AccordionContent>
 
-                        <h4 className='text-lg font-semibold'>From</h4>
+                        <h4 className='text-lg font-semibold my-2'>From</h4>
 
                         <div className='grid grid-cols-2 gap-x-4'>
                             <FormField
                             control={form.control}
                             name="start_country"
                             render={({ field }) => (
-                                <FormItem className="flex flex-col">
+                                <FormItem className="mb-4">
                                 <FormLabel>Country</FormLabel>
                                 <Popover>
                                     <PopoverTrigger asChild>
@@ -147,14 +149,14 @@ const CreateTripForm: FC<CreateTripFormProps> = ({}) => {
 
                         <Separator className="my-4" />
                         
-                        <h4 className='text-lg font-semibold'>To</h4>
+                        <h4 className='text-lg font-semibold my-2'>To</h4>
 
-                        <div className='grid grid-cols-2 items-end'>
+                        <div className='grid grid-cols-2 gap-x-4'>
                             <FormField
                             control={form.control}
                             name="destination_country"
                             render={({ field }) => (
-                                <FormItem className="flex flex-col">
+                                <FormItem className="mb-4">
                                 <FormLabel>Country</FormLabel>
                                 <Popover>
                                     <PopoverTrigger asChild>
@@ -352,7 +354,7 @@ const CreateTripForm: FC<CreateTripFormProps> = ({}) => {
                     <AccordionContent>
 
                         <FormElement form={form} name="rating" label='Overall rating'>
-                            <Input placeholder="No | Eh | Ok | Yes | Very Much" />
+                            <Rating></Rating>
                         </FormElement>
 
                         <FormElement form={form} name="places_2_visit" label='Places to visit'>
@@ -363,8 +365,12 @@ const CreateTripForm: FC<CreateTripFormProps> = ({}) => {
                             <AddableFields placeholder='You should know that...' maxlength={128}></AddableFields>
                         </FormElement>
 
-                        <FormElement form={form} name="photo" label='Upload a photo'>
-                            <Input type="file" />
+                        <FormElement form={form} name="photo" label='Upload a photo' description='A photo that depicts your travelling experience.'>
+                            <Input type="file" accept="image/png, image/jpeg" />
+                        </FormElement>
+
+                        <FormElement form={form} name="description" label='Describe your experience'>
+                            <Textarea placeholder='Anything else you would like to mention...' />
                         </FormElement>
 
                         <FormField
@@ -385,6 +391,7 @@ const CreateTripForm: FC<CreateTripFormProps> = ({}) => {
                         { nightstay === true ? (
                             <Card className="w-full">
                                 <CardHeader>
+                                <CardTitle>Stay</CardTitle>
                                 <CardDescription>Would you recommend this place as a shelter for future wanderers?</CardDescription>
                                 </CardHeader>
                                 <CardContent>
@@ -411,10 +418,6 @@ const CreateTripForm: FC<CreateTripFormProps> = ({}) => {
                                     </div>
                                 </form>
                                 </CardContent>
-                                <CardFooter className="flex justify-between">
-                                <Button variant="outline">Cancel</Button>
-                                <Button>Deploy</Button>
-                                </CardFooter>
                             </Card>
                         ) : (
                             null
