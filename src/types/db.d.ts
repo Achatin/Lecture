@@ -23,3 +23,12 @@ interface FriendRequest {
     senderId: string
     receiverId: string
 }
+
+interface Trip {
+    id: string
+    start_country: string
+    start_location: string
+    destination_country: string
+    destination_location: string
+    transport: string
+}

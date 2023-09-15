@@ -1,45 +1,79 @@
-import { Star } from 'lucide-react';
-import { FC, useState } from 'react'
+import { cn } from "@/lib/utils";
+import { Star } from "lucide-react";
+import { forwardRef, InputHTMLAttributes, useEffect, useState } from "react";
 
-interface RatingProps {
-  
-}
+export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {}
 
-const Rating: FC<RatingProps> = ({}) => {
-  const [rating, setRating] = useState(0);
-  const [hoveredRating, setHoveredRating] = useState(0);
+type RatingLabels = {
+  [key: number]: string;
+};
 
-  const ratingLabels = {
-    1: 'Poor',
-    2: 'Fair',
-    3: 'Average',
-    4: 'Good',
-    5: 'Very Good',
-  };
+const Rating = forwardRef<HTMLInputElement, InputProps>(
+  ({ className, ...props }, ref) => {
+    const [rating, setRating] = useState<number>(0);
+    const [hoveredRating, setHoveredRating] = useState<number>(0);
+    const { value, ...valuelessProps } = props;
 
-  const handleStarClick = (newRating) => {
-    setRating(newRating);
-  };
+    // Load the input value from localStorage on component mount
+    useEffect(() => {
+      const savedValue = sessionStorage.getItem(props.name || "");
+      if (savedValue !== null) {
+        setRating(parseInt(savedValue));
+      }
+    }, [props.name]);
 
-  return (
-    <div className='flex items-center space-x-0.5'>
-      {[...Array(5)].map((_, index) => {
-        const starValue = index + 1;
-        return (
-          <div
-            key={index}
-            onClick={() => handleStarClick(starValue)}
-            onMouseEnter={() => setHoveredRating(starValue)}
-            onMouseLeave={() => setHoveredRating(0)}
-            className='cursor-pointer'
-          >
-            <Star strokeWidth={1.5} className={`text-muted-foreground ${starValue <= hoveredRating || rating ? 'fill-primary text-primary' : 'fill-none'}`} />
-          </div>
-        );
-      })}
-      <p className={`${rating === hoveredRating || (hoveredRating === 0 && rating) ? 'text-primary' : 'text-muted-foreground'} pl-3`}>{ratingLabels[hoveredRating] || ratingLabels[rating] || ''}</p>
-    </div>
-  );
-}
+    const ratingLabels: RatingLabels = {
+      1: 'Poor',
+      2: 'Fair',
+      3: 'Average',
+      4: 'Good',
+      5: 'Excellent', // Fixed typo in 'Excellent'
+    };
 
-export default Rating
+    const handleStarClick = (newRating: number) => {
+      setRating(newRating);
+      sessionStorage.setItem(props.name || "", newRating.toString());
+    };
+
+    return (
+      <div className={cn('flex items-center space-x-0.5', className)}>
+        {[...Array(5)].map((_, index) => {
+          const starValue = index + 1;
+          return (
+            <div
+              key={index}
+              onClick={() => handleStarClick(starValue)}
+              onMouseEnter={() => setHoveredRating(starValue)}
+              onMouseLeave={() => setHoveredRating(0)}
+              className='cursor-pointer'
+            >
+              <input
+                type="radio"
+                hidden
+                value={starValue.toString()}
+                checked={starValue === rating}
+                ref={ref}
+                {...valuelessProps}
+              />
+              <Star
+                strokeWidth={1.5}
+                className={`text-muted-foreground ${starValue <= rating
+                  ? 'fill-primary text-primary'
+                  : ''} ${starValue <= hoveredRating
+                  ? 'fill-primary text-primary'
+                  : ''}`}
+              />
+            </div>
+          );
+        })}
+        <p className={`${rating === hoveredRating || (hoveredRating === 0 && rating)
+          ? 'text-primary'
+          : 'text-muted-foreground'} pl-3`}>
+          {ratingLabels[hoveredRating] || ratingLabels[rating] || ''}
+        </p>
+      </div>
+    );
+  }
+);
+
+export default Rating;

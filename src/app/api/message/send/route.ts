@@ -2,7 +2,6 @@ import { fetchRedis } from "@/helpers/redis";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { messageValidator } from "@/lib/validations/message";
-import { timeStamp } from "console";
 import { nanoid } from "nanoid";
 import { getServerSession } from "next-auth";
 

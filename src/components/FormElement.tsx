@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, cloneElement } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from './ui/form'
 
@@ -13,11 +13,11 @@ const FormElement: FC<FormElementProps> = ({ children, form, name, label, descri
   return <FormField
       control={form.control}
       name={name}
-      render={({ }) => (
-          <FormItem className='mb-5 mx-1'>
+      render={({ field }) => (
+          <FormItem>
           <FormLabel>{label}</FormLabel>
           <FormControl>
-              {children }
+            {cloneElement(children, { ...field })}
           </FormControl>
           <FormDescription>{description}</FormDescription>
           <FormMessage />
