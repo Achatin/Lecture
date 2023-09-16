@@ -1,6 +1,6 @@
 "use client"
 
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import * as z from "zod"
 import { Button } from "@/components/ui/button"
 import {
@@ -38,6 +38,7 @@ import currencies from '../../datasets/currencies.json'
 import countries from '../../datasets/countries.json'
 import { Session } from 'next-auth'
 import ButtonLoading from './ui/buttonLoading'
+import FileInput from './trip-form/FileInput'
 
 
 interface CreateTripFormProps {
@@ -56,7 +57,7 @@ const CreateTripForm: FC<CreateTripFormProps> = ({session}) => {
     const nightstay = form.watch('nightstay');
 
     async function onSubmit(values: z.infer<typeof postTripValidator>) {
-        setIsLoading(true)
+        setIsLoading(true);
 
         const tripId = nanoid();
         const { user } = session;
@@ -377,9 +378,7 @@ const CreateTripForm: FC<CreateTripFormProps> = ({session}) => {
                                 <AddableFields placeholder='You should know that...' maxlength={128}></AddableFields>
                             </FormElement>
 
-                            <FormElement form={form} name="photo" label='Upload a photo' description='A photo that depicts your travelling experience.'>
-                                <Input type="file" accept="image/png, image/jpeg" />
-                            </FormElement>
+                            <FileInput></FileInput>
 
                             <FormElement form={form} name="description" label='Describe your experience'>
                                 <Textarea placeholder='Anything else you would like to mention...' />

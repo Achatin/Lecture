@@ -14,7 +14,7 @@ const Rating = forwardRef<HTMLInputElement, InputProps>(
     const [hoveredRating, setHoveredRating] = useState<number>(0);
     const { value, ...valuelessProps } = props;
 
-    // Load the input value from localStorage on component mount
+    // Load the input value from sesssionStorage on component mount
     useEffect(() => {
       const savedValue = sessionStorage.getItem(props.name || "");
       if (savedValue !== null) {

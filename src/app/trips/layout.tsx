@@ -113,7 +113,7 @@ const Layout = async ({ children }: LayoutProps) => {
                 {children}
             </ScrollArea>
 
-            <SheetContent className='w-full sm:w-[540px] sm:max-w-xl'>
+            <SheetContent className='w-full sm:w-[540px] sm:max-w-xl overflow-y-scroll overflow-x-hidden'>
                 <div className='bg-muted w-[120%] -mx-6 -mt-6 mb-4'>
                     <Image src="/illustrations/trip.svg" alt="Road trip illustration" width={300} height={300} className='p-10 mx-auto' />
                 </div>
@@ -123,6 +123,7 @@ const Layout = async ({ children }: LayoutProps) => {
                 </SheetHeader>
                 <CreateTripForm session={session}></CreateTripForm>
             </SheetContent>
+
         </Sheet>
     </div>
 }
