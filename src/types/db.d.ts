@@ -43,7 +43,7 @@ interface Trip {
     places_2_visit?: string[] | null;
     tips?: string[] | null;
     nightstay?: boolean | null;
-    photo?: string | null;
+    image?: string | null;
     description?: string | "";
     accommodation?: {
         accomodation_type?: string | null;

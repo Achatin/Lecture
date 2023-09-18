@@ -17,8 +17,8 @@ export const postTripValidator = z.object({
     places_2_visit: z.array(z.string().min(1).max(32)).optional(),
     tips: z.array(z.string().min(1).max(256)).optional(),
     nightstay: z.boolean().optional(),
-    photo: z.string().optional(),
-    //description: z.string().optional(),
+    image: z.string(),
+    description: z.string().optional(),
     accommodation: z.object({
         accomodation_type: z.string().min(1).max(255).optional(),
         accomodation_link: z.string().url().optional(),
@@ -47,7 +47,7 @@ export const tripValidator = z.object({
     places_2_visit: z.array(z.string().min(1).max(32)).optional(),
     tips: z.array(z.string().min(1).max(256)).optional(),
     nightstay: z.boolean().optional(),
-    photo: z.string().optional(),
+    image: z.string(),
     description: z.string().optional(),
     accommodation: z.object({
         accomodation_type: z.string().min(1).max(255).optional(),

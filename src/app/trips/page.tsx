@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { fetchRedis } from "@/helpers/redis";
 import { tripArrayValidator } from "@/lib/validations/trip";
 import { notFound } from 'next/navigation';
+import Image from 'next/image'
 import Link from 'next/link';
 
 interface pageProps {}
@@ -31,11 +32,11 @@ const page = async ({}) => {
                         <Link href={`/trip/${trip.id}`}>
                             <Card className="w-[350px] hover:bg-accent hover:text-accent-foreground">
                                 <CardHeader>
+                                    <Image src={trip.image} alt={`thumbnail of a picture of ${trip.destination_location}`} width={500} height={500} className='w-full rounded' />
                                     <CardTitle>{trip.start_location} → {trip.destination_location}</CardTitle>
                                     <CardDescription>Trip from <span className="font-medium">{trip.start_country}, {trip.start_location}</span> to <span className="font-medium">{trip.destination_country}, {trip.destination_location}</span>.</CardDescription>
                                 </CardHeader>
                                 <CardContent>
-                                    
                                 </CardContent>
                                 <CardFooter className="flex justify-between">
                                 </CardFooter>

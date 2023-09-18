@@ -28,7 +28,7 @@ import { Card, CardContent } from './ui/card'
 import AddableFields from './AddableFields'
 import FormElement from './FormElement'
 import { Textarea } from './ui/textarea'
-import Rating from './Rating'
+import Rating from './trip-form/Rating'
 import { useRouter } from 'next/navigation'
 import { nanoid } from 'nanoid'
 import { postTripValidator } from '@/lib/validations/trip'
@@ -38,7 +38,7 @@ import currencies from '../../datasets/currencies.json'
 import countries from '../../datasets/countries.json'
 import { Session } from 'next-auth'
 import ButtonLoading from './ui/buttonLoading'
-import FileInput from './trip-form/FileInput'
+import ImageSelector from './trip-form/ImageSelector'
 
 
 interface CreateTripFormProps {
@@ -55,6 +55,7 @@ const CreateTripForm: FC<CreateTripFormProps> = ({session}) => {
 
     const transport = form.watch('transport');
     const nightstay = form.watch('nightstay');
+    const destLocation = form.watch('destination_location');
 
     async function onSubmit(values: z.infer<typeof postTripValidator>) {
         setIsLoading(true);
@@ -371,14 +372,18 @@ const CreateTripForm: FC<CreateTripFormProps> = ({session}) => {
                             </FormElement>
 
                             <FormElement form={form} name="places_2_visit" label='Places to visit'>
-                                <AddableFields placeholder='Grand Canyon'></AddableFields>
+                                <AddableFields placeholder='Grand Canyon' />
                             </FormElement>
 
                             <FormElement form={form} name="tips" label='Helpful tips'>
-                                <AddableFields placeholder='You should know that...' maxlength={128}></AddableFields>
+                                <AddableFields placeholder='You should know that...' maxlength={128} />
                             </FormElement>
 
-                            <FileInput></FileInput>
+                            {destLocation ? (
+                                <FormElement form={form} name="image" description='Choose an image that best depicts your experience.'>
+                                    <ImageSelector keyword={destLocation} onSelectImage={(imageUrl) => form.setValue('image', imageUrl)} />
+                                </FormElement>
+                            ) : null}
 
                             <FormElement form={form} name="description" label='Describe your experience'>
                                 <Textarea placeholder='Anything else you would like to mention...' />

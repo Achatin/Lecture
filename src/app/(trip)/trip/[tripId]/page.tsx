@@ -1,6 +1,7 @@
 import { fetchRedis } from '@/helpers/redis';
 import { tripArrayValidator } from '@/lib/validations/trip';
 import { notFound } from 'next/navigation';
+import Image from 'next/image';
 
 
 interface pageProps {
@@ -29,7 +30,7 @@ const page = async (params: pageProps) => {
 
     return (
       <article className='max-w-2xl mx-auto my-10'>
-        <img src="" alt={`View of ${td.destination_location} during trip in ${td.destination_country}`} className='mb-6' />
+        <Image src={td.image} alt={`View of ${td.destination_location} during trip in ${td.destination_country}`} width={500} height={500} className='mb-6 w-full' />
         <h1 className='text-3xl font-bold mb-4'>Trip from {td.start_location} to {td.destination_location}</h1>
         <p className=''>{td.description}</p>
 
