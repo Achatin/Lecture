@@ -26,7 +26,12 @@ interface FriendRequest {
 
 interface Trip {
     id: string;
-    author: object;
+    author: {
+        name: string;
+        email: string;
+        image: string;
+        id: string;
+    };
     start_country: string;
     start_location: string;
     destination_country: string;

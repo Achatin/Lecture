@@ -30,7 +30,12 @@ export const postTripValidator = z.object({
 
 export const tripValidator = z.object({
     id: z.string(),
-    author: z.object({}).optional(),
+    author: z.object({
+        name: z.string(),
+        email: z.string(),
+        image: z.string(),
+        id: z.string(),
+    }),
     start_country: z.string().min(1).max(255),
     start_location: z.string().min(1).max(255),
     destination_country: z.string().min(1).max(255),

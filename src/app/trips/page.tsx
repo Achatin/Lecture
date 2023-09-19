@@ -2,8 +2,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { fetchRedis } from "@/helpers/redis";
 import { tripArrayValidator } from "@/lib/validations/trip";
 import { notFound } from 'next/navigation';
-import Image from 'next/image'
-import Link from 'next/link';
+import HorizontalTeaser from "@/components/trip-teasers/HorizontalTeaser";
 
 interface pageProps {}
 
@@ -25,26 +24,12 @@ const page = async ({}) => {
     const trips = await getTrips() as Trip[];
 
     return (
-        <main className="max-w-6xl mx-auto mt-10">
-            <div className="grid md:grid-cols-3 grid-cols-1 gap-5">
-                {trips.map((trip) => {
-                    return (
-                        <Link href={`/trip/${trip.id}`}>
-                            <Card className="w-[350px] hover:bg-accent hover:text-accent-foreground">
-                                <CardHeader>
-                                    <Image src={trip.image} alt={`thumbnail of a picture of ${trip.destination_location}`} width={500} height={500} className='w-full rounded' />
-                                    <CardTitle>{trip.start_location} → {trip.destination_location}</CardTitle>
-                                    <CardDescription>Trip from <span className="font-medium">{trip.start_country}, {trip.start_location}</span> to <span className="font-medium">{trip.destination_country}, {trip.destination_location}</span>.</CardDescription>
-                                </CardHeader>
-                                <CardContent>
-                                </CardContent>
-                                <CardFooter className="flex justify-between">
-                                </CardFooter>
-                            </Card>
-                        </Link>
-                    )
-                })}
-            </div>
+        <main className="max-w-3xl mx-auto mt-10 space-y-6">
+            {trips.map((trip) => {
+                return (
+                    <HorizontalTeaser trip={trip} />
+                )
+            })}
         </main>
     )
 }
