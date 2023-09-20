@@ -10,6 +10,7 @@ import { Badge, badgeVariants } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { BusFront, Heart, MessageCircle, Share } from 'lucide-react';
 import Rating from '@/components/trip-form/Rating';
+import Embed from '@/components/Embed';
 
 
 interface pageProps {
@@ -90,7 +91,14 @@ const page = async (params: pageProps) => {
           <Separator className="my-4" />
         </section>
 
-        <Image src={trip.image} alt={`View of ${trip.destination_location} during trip in ${trip.destination_country}`} width={500} height={500} className='mb-6 w-full rounded' />
+        <section id="trip-picture" className='relative'>
+          <Image src={trip.image} alt={`View of ${trip.destination_location} during trip in ${trip.destination_country}`} width={500} height={500} className='mb-6 w-full rounded' />
+          <div className='absolute left-10 -bottom-4 bg-primary font-semibold text-center text-primary-foreground py-3 px-4 rounded drop-shadow'>
+            <p className='text-xs mb-1'>Visited</p>
+            <p className='text-2xl'>Aug</p>
+            <p>2023</p>
+          </div>
+        </section>
 
         <section id="trip-info" className='mb-6'>
           <Separator className="my-4" />
@@ -102,15 +110,18 @@ const page = async (params: pageProps) => {
             </div>
 
             <div>
-              <p className='font-medium mb-1.5'>Transport from <span className='font-bold'>{trip.start_location}</span>, {trip.start_country} <span className='text-lg'>🇦🇱</span></p>
+              <p className='font-medium mb-1.5'>
+                Transport from&nbsp;
+                <Link href={`/trips?search=${trip.start_location}`} className='font-bold hover:underline underline-2'>{trip.start_location}</Link>
+                , {trip.start_country} 🇦🇱
+              </p>
 
               <div className='flex items-center text-muted-foreground'>
                 <BusFront strokeWidth={1.5} className='mr-1.5' />
                 <p>{trip.transport[0].toUpperCase() + trip.transport.slice(1)} · 
                   Arditi Travel{trip.travelling_agency} ·  
                   {trip.duration_days ? trip.duration_days + 'd' : ''} {trip.duration_hours ? trip.duration_hours + 'h' : ''} {trip.duration_minutes ? trip.duration_minutes + 'm · ' : ' · '}
-                  {trip.price} {trip.currency} · 
-                  Aug 28{trip.travel_date}
+                  {trip.price} {trip.currency}
                 </p>
               </div>
             </div>
@@ -121,7 +132,7 @@ const page = async (params: pageProps) => {
 
         <p className=''>{trip.description}</p>
 
-        <section id="places-to-visit" className='border-l-4 border-primary my-6 pl-4 pb-1'>
+        <section id="places-to-visit" className='border-l-4 border-primary my-8 pl-4 pb-1'>
           <h3 className='font-bold text-2xl mb-2'>Places to visit</h3>
 
           <ul className='list-none grid grid-cols-2 space-y-1'>
@@ -132,7 +143,7 @@ const page = async (params: pageProps) => {
           </ul>
         </section>
 
-        <section id="tips" className='my-6 p-4 bg-accent rounded'>
+        <section id="tips" className='my-8 p-4 bg-accent rounded'>
           <h3 className='font-bold text-2xl mb-4'>Tips</h3>
 
           <ul className='list-none space-y-2'>
@@ -151,11 +162,7 @@ const page = async (params: pageProps) => {
         <section id="accomodation" className='my-6'>
           <h3 className='font-bold text-2xl mb-4'>Accomodation</h3>
 
-          {/* <div class="airbnb-embed-frame" data-id="618759747225513059" data-view="home" className="w-[450px] h-[300px] m-auto">
-            <a href="https://sk.airbnb.com/rooms/618759747225513059?check_in=2023-09-30&amp;check_out=2023-10-07&amp;guests=1&amp;adults=1&amp;s=66&amp;source=embed_widget">Zobraziť na Airbnb</a>
-            <a href="https://sk.airbnb.com/rooms/618759747225513059?check_in=2023-09-30&amp;check_out=2023-10-07&amp;guests=1&amp;adults=1&amp;s=66&amp;source=embed_widget" rel="nofollow">Vila · Lovran · ★5,0 · 7&nbsp;spální · 8&nbsp;lôžok · 8 kúpeľní</a>
-            <script async="" src="https://sk.airbnb.com/embeddable/airbnb_jssdk"></script>
-          </div> */}
+          <Embed />
           
         </section>
 
