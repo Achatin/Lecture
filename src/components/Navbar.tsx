@@ -1,5 +1,3 @@
-import { FC } from 'react'
-import Link from 'next/link'
 import Image from 'next/image'
 import { notFound } from 'next/navigation';
 import { Input } from './ui/input'
@@ -30,7 +28,7 @@ const Navbar = async ({}) => {
             <Sheet>
                 <SheetTrigger asChild>
                     <Button className='w-32 font-bold'>
-                        <PlusSquare className='w-5 h-5 mx-2' />
+                        <PlusSquare className='w-5 h-5 mr-2' />
                         Post trip
                     </Button>
                 </SheetTrigger>
@@ -47,7 +45,43 @@ const Navbar = async ({}) => {
                 </SheetContent>
             </Sheet>
 
-            <Bell className='text-muted-foreground' />
+            
+
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                    <div className='p-1.5'>
+                        <Bell size={20} className='text-muted-foreground' />
+                    </div>
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                    <DropdownMenuLabel className="font-normal">
+                        <p className="font-medium leading-none">Notifications</p>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuGroup>
+                    <DropdownMenuItem>
+                        Profile
+                        <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                        Billing
+                        <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                        Settings
+                        <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>New Team</DropdownMenuItem>
+                    </DropdownMenuGroup>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>
+                        Log out
+                    <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+                    </DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
 
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
