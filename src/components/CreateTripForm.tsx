@@ -24,7 +24,6 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './
 import { Calendar } from './ui/calendar'
 import { format } from 'date-fns'
 import { Checkbox } from './ui/checkbox'
-import { Card, CardContent } from './ui/card'
 import AddableFields from './AddableFields'
 import FormElement from './FormElement'
 import { Textarea } from './ui/textarea'

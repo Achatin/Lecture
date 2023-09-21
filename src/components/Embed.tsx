@@ -4,7 +4,6 @@ import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FC, useEffect, useState } from 'react';
-import { AspectRatio } from './ui/aspect-ratio';
 import { Skeleton } from './ui/skeleton';
 
 interface EmbedProps {
@@ -28,7 +27,7 @@ const Embed: FC<EmbedProps> = ({ url }) => {
             setMetadata(metadata);
             setError(null);
           }
-        } catch (e) {
+        } catch (e: Error) {
           setMetadata(null);
           setError(e.response.data.error);
         }

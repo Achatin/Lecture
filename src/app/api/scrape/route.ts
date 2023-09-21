@@ -6,7 +6,7 @@ export async function POST(req: Request) {
         let { url }: { string } = await req.json();
 
         if (!isValidURL(url)) {
-            return new Response(JSON.stringify({ error: "Invalid URL." }), {
+            return new Response(JSON.stringify({ error: "Invalid URL" }), {
                 headers: { 'Content-Type': 'application/json' },
                 status: 400, // Bad Request
             });
