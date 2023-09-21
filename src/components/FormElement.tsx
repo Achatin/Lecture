@@ -7,14 +7,15 @@ interface FormElementProps {
   name: string,
   label?: string,
   description?: string,
+  className?: string,
 }
 
-const FormElement: FC<FormElementProps> = ({ children, form, name, label, description }) => {
+const FormElement: FC<FormElementProps> = ({ children, form, name, label, description, className }) => {
   return <FormField
       control={form.control}
       name={name}
       render={({ field }) => (
-          <FormItem>
+          <FormItem className={className}>
           <FormLabel>{label}</FormLabel>
           <FormControl>
             {cloneElement(children, { ...field })}

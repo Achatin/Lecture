@@ -1,6 +1,6 @@
 "use client"
 
-import { FC, useEffect, useState } from 'react'
+import { FC, useState } from 'react'
 import * as z from "zod"
 import { Button } from "@/components/ui/button"
 import {
@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Send, Eye, ChevronsUpDown, Check, Currency, CalendarIcon } from 'lucide-react'
+import { Send, Eye, ChevronsUpDown, Check, Currency, CalendarIcon, Search } from 'lucide-react'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from './ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 import { cn } from '@/lib/utils'
@@ -47,7 +47,8 @@ interface CreateTripFormProps {
 
 const CreateTripForm: FC<CreateTripFormProps> = ({session}) => {
     const router = useRouter();
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [search4Image, setSearch4Image] = useState('');
     
     const form = useForm<z.infer<typeof postTripValidator>>({
         resolver: zodResolver(postTripValidator),
@@ -80,7 +81,85 @@ const CreateTripForm: FC<CreateTripFormProps> = ({session}) => {
     
     return (
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 mt-8">
+            <h3 className='text-lg font-semibold mb-3'>Where did you travel?</h3>
+
+            <div className='relative grid grid-cols-2 gap-x-4'>
+                <FormField
+                control={form.control}
+                name="destination_country"
+                render={({ field }) => (
+                    <FormItem className="mb-4">
+                    <FormLabel>Country</FormLabel>
+                    <Popover>
+                        <PopoverTrigger asChild>
+                        <FormControl>
+                            <Button
+                            variant="outline"
+                            role="combobox"
+                            className={cn(
+                                "w-[200px] justify-between",
+                                !field.value && "text-muted-foreground"
+                            )}
+                            >
+                            {field.value
+                                ? countries.find(
+                                    (country) => country.name === field.value
+                                )?.name
+                                : "Select country"}
+                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                            </Button>
+                        </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-[200px] p-0">
+                        <Command>
+                            <CommandInput placeholder="Search country..." />
+                            <CommandEmpty>No country found.</CommandEmpty>
+                            <CommandGroup>
+                            {countries.map((country) => (
+                                <CommandItem
+                                value={country.name}
+                                key={country.code}
+                                onSelect={() => {
+                                    form.setValue("destination_country", country.name)
+                                }}
+                                >
+                                <Check
+                                    className={cn(
+                                    "mr-2 h-4 w-4",
+                                    country.name === field.value
+                                        ? "opacity-100"
+                                        : "opacity-0"
+                                    )}
+                                />
+                                {country.name}
+                                </CommandItem>
+                            ))}
+                            </CommandGroup>
+                        </Command>
+                        </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                    </FormItem>
+                )}
+                />
+
+                <FormElement form={form} name="destination_location" label='Location'>
+                    <Input type="text" placeholder="City, town, location..." />
+                </FormElement>
+
+                <Button type='button' onClick={() => setSearch4Image(form.getValues('destination_location'))} variant="ghost" className='absolute bottom-4 right-0'><Search size={18} className='text-muted-foreground' /></Button>
+            </div>
+
+            {destLocation === search4Image ? (
+                <FormElement form={form} name="image" label='Image that best depicts your experience' className={`${form.getValues('destination_location') ? 'animate-in fade-in' : 'hidden' }`}>
+                    <ImageSelector keyword={destLocation} onSelectImage={(imageUrl) => form.setValue('image', imageUrl)} />
+                </FormElement>
+            ) : null }
+
+            <FormElement form={form} name="description" label='Describe your experience' className={`${search4Image ? 'animate-in fade-in' : 'hidden' }`}>
+                <Textarea placeholder='Anything else you would like to mention...' />
+            </FormElement>
 
             <Accordion type="single" defaultValue="item-1" collapsible>
                 <AccordionItem value="item-1">
@@ -379,15 +458,7 @@ const CreateTripForm: FC<CreateTripFormProps> = ({session}) => {
                                 <AddableFields placeholder='You should know that...' maxlength={128} />
                             </FormElement>
 
-                            {destLocation ? (
-                                <FormElement form={form} name="image" description='Choose an image that best depicts your experience.'>
-                                    <ImageSelector keyword={destLocation} onSelectImage={(imageUrl) => form.setValue('image', imageUrl)} />
-                                </FormElement>
-                            ) : null}
-
-                            <FormElement form={form} name="description" label='Describe your experience'>
-                                <Textarea placeholder='Anything else you would like to mention...' />
-                            </FormElement>
+                            
 
                             <FormField
                             control={form.control}
