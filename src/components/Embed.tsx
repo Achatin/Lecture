@@ -3,45 +3,78 @@
 import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { FC, useEffect, useState } from 'react';
+import { AspectRatio } from './ui/aspect-ratio';
+import { Skeleton } from './ui/skeleton';
 
-const Embed = () => {
-  const [linkData, setLinkData] = useState(null);
-  const [url, setUrl] = useState('');
+interface EmbedProps {
+  url: string,
+}
 
-  const handleFetchMetadata = async () => {
-    try {
-        const response = await axios.post('/api/scrape/', { url: url });
-        const metadata = response.data;
-        setLinkData(metadata);
-    } catch (e) {
-        console.error('Error fetching data:', e);
+const Embed: FC<EmbedProps> = ({ url }) => {
+  const [metadata, setMetadata] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (url.trim() !== '') {
+      const fetchData = async () => {
+        try {
+          const response = await axios.post('/api/scrape/', { url });
+          if (response.data.error) {
+            setError(response.data.error);
+            setMetadata(null);
+          } else {
+            const metadata = response.data;
+            setMetadata(metadata);
+            setError(null);
+          }
+        } catch (e) {
+          setMetadata(null);
+          setError(e.response.data.error);
+        }
+      };
+
+      fetchData();
+    } else {
+      setMetadata(null);
+      setError(null);
     }
-    
-  };
+  }, [url]);
 
   return (
     <div>
-      <input
-        type="text"
-        placeholder="Enter URL"
-        value={url}
-        onChange={(e) => setUrl(e.target.value)}
-      />
-      <button onClick={handleFetchMetadata}>Fetch Metadata</button>
-      {linkData ? (
+      {error ? (
+        <p>{error}</p>
+      ) : url.trim() !== '' && !metadata ? (
         <div className='flex items-center my-4 space-x-6'>
-            <Link href={linkData.url} className='w-full'>
-                <Image src={linkData.ogImage} alt="thumbnail image of the accomodation" width={300} height={300} />
-            </Link>
-            <div>
-                <Link href={linkData.url} className='hover:underline decoration-2'>
-                    <h3 className='font-semibold mb-2'>{linkData.title}</h3>
-                </Link>
-                <p className='line-clamp-3 text-muted-foreground'>{linkData.description}</p>
-            </div>
+          <Skeleton className="w-72 h-32" />
+          <div className='w-full space-y-1.5'>
+            <Skeleton className='h-6 w-full mb-3' />
+            <Skeleton className='h-4 w-full' />
+            <Skeleton className='h-4 w-full' />
+            <Skeleton className='h-4 w-full' />
+            <Skeleton className='h-4 w-4/5' />
+          </div>
         </div>
-      ) : null}
+      ) : (
+        <div>
+          {metadata ? (
+            <div className='flex items-center my-4 space-x-6'>
+              {metadata.ogImage ? (
+                  <Link href={metadata.url}>
+                    <Image src={metadata.ogImage} alt="thumbnail image of the accomodation" width={400} height={400} className='object-cover object-center w-full h-full aspect-[4/3]' />
+                  </Link>
+              ) : null}
+            <div>
+                <Link href={metadata.url} className='hover:underline decoration-2'>
+                    <h3 className='font-semibold mb-2 line-clamp-2'>{metadata.title}</h3>
+                </Link>
+                <p className='line-clamp-3 text-muted-foreground'>{metadata.description}</p>
+            </div>
+          </div>
+          ) : null}
+        </div>
+      )}
     </div>
   );
 };

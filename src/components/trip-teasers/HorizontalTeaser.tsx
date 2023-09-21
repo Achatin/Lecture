@@ -15,7 +15,7 @@ const HorizontalTeaser: FC<HorizontalTeaserProps> = ({trip}) => {
   return (
     <div className="hover:bg-accent hover:text-accent-foreground flex">
         <Link href={`/trip/${trip.id}`}>
-            <Image src={trip.image || ""} alt={`thumbnail of a picture of ${trip.destination_location}`} width={400} height={400} />
+            <Image src={trip.image || ""} alt={`thumbnail of a picture of ${trip.destination_location}`} width={300} height={300} className="object-cover object-center w-full h-full aspect-video" />
         </Link>
 
         <section className="flex flex-col justify-between w-full my-4 mx-8">

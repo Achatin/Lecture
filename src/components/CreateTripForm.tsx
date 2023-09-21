@@ -39,6 +39,7 @@ import countries from '../../datasets/countries.json'
 import { Session } from 'next-auth'
 import ButtonLoading from './ui/buttonLoading'
 import ImageSelector from './trip-form/ImageSelector'
+import AccomodationCard from './trip-form/AccomodationCard'
 
 
 interface CreateTripFormProps {
@@ -405,77 +406,7 @@ const CreateTripForm: FC<CreateTripFormProps> = ({session}) => {
                             />
 
                             { nightstay === true ? (
-                                <Card className="w-full">
-                                    <CardContent className='mt-6'>
-                                        <div className="grid w-full items-center gap-4">
-
-                                        <FormField
-                                            control={form.control}
-                                            name="accomodation_type"
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                <FormLabel>Type</FormLabel>
-                                                <Select onValueChange={field.onChange} defaultValue='hotel'>
-                                                    <FormControl>
-                                                    <SelectTrigger>
-                                                        <SelectValue />
-                                                    </SelectTrigger>
-                                                    </FormControl>
-                                                    <SelectContent>
-                                                        <SelectItem value="airbnb">AirBnB</SelectItem>
-                                                        <SelectItem value="camping">Camping</SelectItem>
-                                                        <SelectItem value="hotel">Hotel</SelectItem>
-                                                        <SelectItem value="hostel">Hostel</SelectItem>
-                                                        <SelectItem value="motel">Motel</SelectItem>
-                                                        <SelectItem value="van">Van</SelectItem>
-                                                        <SelectItem value="other">Other</SelectItem>
-                                                    </SelectContent>
-                                                </Select>
-                                                <FormMessage />
-                                                </FormItem>
-                                            )}
-                                            />
-
-                                            <FormElement form={form} name="accomodation_link" label='Link'>
-                                                <Input type="url" placeholder='Link the accomodation' />
-                                            </FormElement>
-
-                                            <div className='flex space-x-2'>
-                                                <FormElement form={form} name="accomodation_price" label='Price' description='Approximate price for one night'>
-                                                    <Input type="number" placeholder={0} />
-                                                </FormElement>
-
-                                                <FormField
-                                                control={form.control}
-                                                name="currency"
-                                                render={({ field }) => (
-                                                    <FormItem className='mb-4 w-24'>
-                                                    <FormLabel>‎ </FormLabel>
-                                                    <Select onValueChange={field.onChange} defaultValue='EUR' >
-                                                        <FormControl>
-                                                        <SelectTrigger>
-                                                            <SelectValue />
-                                                        </SelectTrigger>
-                                                        </FormControl>
-                                                        <SelectContent>
-                                                            { currencies.map((currency) => {
-                                                                return <SelectItem value={currency.cc}>{currency.cc} ({currency.symbol})</SelectItem>
-                                                            })}
-                                                        </SelectContent>
-                                                    </Select>
-                                                    <FormMessage />
-                                                    </FormItem>
-                                                )}
-                                                />
-                                            </div>
-
-                                            <FormElement form={form} name="accomodation_rating" label='Rating'>
-                                                <Rating></Rating>
-                                            </FormElement>
-
-                                        </div>
-                                    </CardContent>
-                                </Card>
+                                <AccomodationCard form={form} />
                             ) : (
                                 null
                             )}
