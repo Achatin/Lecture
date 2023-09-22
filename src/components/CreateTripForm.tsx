@@ -1,6 +1,7 @@
 "use client"
 
 import { FC, useState } from 'react'
+import Image from 'next/image'
 import * as z from "zod"
 import { Button } from "@/components/ui/button"
 import {
@@ -48,7 +49,7 @@ interface CreateTripFormProps {
 const CreateTripForm: FC<CreateTripFormProps> = ({session}) => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
-    const [search4Image, setSearch4Image] = useState('');
+    const [search4Image, setSearch4Image] = useState(false);
     
     const form = useForm<z.infer<typeof postTripValidator>>({
         resolver: zodResolver(postTripValidator),
@@ -81,10 +82,10 @@ const CreateTripForm: FC<CreateTripFormProps> = ({session}) => {
     
     return (
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 mt-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-8">
             <h3 className='text-lg font-semibold mb-3'>Where did you travel?</h3>
 
-            <div className='relative grid grid-cols-2 gap-x-4'>
+            <div className='relative grid grid-cols-2 space-x-4'>
                 <FormField
                 control={form.control}
                 name="destination_country"
@@ -144,20 +145,41 @@ const CreateTripForm: FC<CreateTripFormProps> = ({session}) => {
                 )}
                 />
 
-                <FormElement form={form} name="destination_location" label='Location'>
-                    <Input type="text" placeholder="City, town, location..." />
-                </FormElement>
 
-                <Button type='button' onClick={() => setSearch4Image(form.getValues('destination_location'))} variant="ghost" className='absolute bottom-4 right-0'><Search size={18} className='text-muted-foreground' /></Button>
+                <FormField control={form.control} name="destination_location"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Location</FormLabel>
+                            <FormControl>
+                                <Input type='text' placeholder="City, town, location..." {...field} value={field?.value || ''} onChange={(e) => {setSearch4Image(false); field.onChange(e);}} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
             </div>
 
-            {destLocation === search4Image ? (
+            {search4Image ? (
                 <FormElement form={form} name="image" label='Image that best depicts your experience' className={`${form.getValues('destination_location') ? 'animate-in fade-in' : 'hidden' }`}>
                     <ImageSelector keyword={destLocation} onSelectImage={(imageUrl) => form.setValue('image', imageUrl)} />
                 </FormElement>
-            ) : null }
+            ) : (
+                <div>
+                    <FormLabel>Picture</FormLabel>
+                    <p>Search for images on 
+                        <Button type='button' variant='link' onClick={() => setSearch4Image(true)}>Unsplash 
+                            <Image src="/images/unsplash.svg" alt="Unsplash logo icon" width={18} height={18} className="ml-2" />
+                        </Button>
+                    </p>
+                </div>
+            )}
 
-            <FormElement form={form} name="description" label='Describe your experience' className={`${search4Image ? 'animate-in fade-in' : 'hidden' }`}>
+            <FormElement form={form} name="rating" label='Overall rating' className={`${form.getValues('destination_location') && search4Image ? 'animate-in fade-in' : 'hidden' }`}>
+                <Rating />
+            </FormElement>
+
+            <FormElement form={form} name="description" label='Describe your experience' className={`${form.getValues('destination_location') && search4Image ? 'animate-in fade-in' : 'hidden' }`}>
                 <Textarea placeholder='Anything else you would like to mention...' />
             </FormElement>
 
@@ -297,10 +319,6 @@ const CreateTripForm: FC<CreateTripFormProps> = ({session}) => {
                                     </FormItem>
                                 )}
                                 />
-
-                                <FormElement form={form} name="destination_location" label='Location'>
-                                    <Input type="text" placeholder="Name of the city or location..." />
-                                </FormElement>
                             </div>
 
                         </div>

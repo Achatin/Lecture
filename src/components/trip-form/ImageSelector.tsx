@@ -5,7 +5,7 @@ import { Skeleton } from '../ui/skeleton';
 
 interface ImageSelectorProps {
   keyword: string;
-  onSelectImage: (imageUrl: string) => void; // Callback function to handle the selected image URL
+  onSelectImage: (imageUrl: string) => void;
 }
 
 const ImageSelector: FC<ImageSelectorProps> = ({ keyword, onSelectImage }) => {
@@ -14,14 +14,16 @@ const ImageSelector: FC<ImageSelectorProps> = ({ keyword, onSelectImage }) => {
   const [imageLoading, setImageLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchImages = async () => {
-      const images = await generateImages(keyword);
-      if (images) {
-        setImageUrls(images);
-      }
-    };
+    if (keyword) {
+      const fetchImages = async () => {
+        const images = await generateImages(keyword);
+        if (images) {
+          setImageUrls(images);
+        }
+      };
 
-    fetchImages();
+      fetchImages();
+    }
   }, [keyword]);
 
   const onImageSelect = (imageUrl: string) => {
