@@ -8,9 +8,15 @@ import { Skeleton } from './ui/skeleton';
 
 interface EmbedProps {
   url: string,
+  onData: (data: {
+    url: string;
+    image: string;
+    title: string;
+    description: string;
+  }) => void;
 }
 
-const Embed: FC<EmbedProps> = ({ url }) => {
+const Embed: FC<EmbedProps> = ({ url, onData }) => {
   const [metadata, setMetadata] = useState(null);
   const [error, setError] = useState(null);
 
@@ -25,6 +31,12 @@ const Embed: FC<EmbedProps> = ({ url }) => {
           } else {
             const metadata = response.data;
             setMetadata(metadata);
+            onData({
+              url: metadata.url,
+              image: metadata.ogImage,
+              title: metadata.title,
+              description: metadata.description,
+            });
             setError(null);
           }
         } catch (e: Error) {

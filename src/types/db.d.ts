@@ -38,9 +38,11 @@ interface Trip {
     destination_location: string;
     transport: string;
     travelling_agency?: string | null;
-    duration_days?: number | null;
-    duration_hours?: number | null;
-    duration_minutes?: number | null;
+    duration: {
+        days?: number | null;
+        hours?: number | null;
+        minutes?: number | null;
+    };
     price?: number | null;
     currency?: string | null;
     travel_date?: Date | null;
@@ -51,10 +53,10 @@ interface Trip {
     image?: string | null;
     description?: string | "";
     accommodation?: {
-        accomodation_type?: string | null;
-        accomodation_link?: string | null;
-        accomodation_price?: number | null;
-        accomodation_currency?: string | null;
+        url?: string | null;
+        image?: string | null;
+        title?: string | null;
+        description?: string | null;
         accomodation_rating?: number | null;
     } | null;
 }  

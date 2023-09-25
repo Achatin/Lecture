@@ -93,8 +93,8 @@ const page = async (params: pageProps) => {
           <Image src={trip.image} alt={`View of ${trip.destination_location} during trip in ${trip.destination_country}`} width={500} height={500} className='mb-6 w-full rounded' />
           <div className='absolute left-10 -bottom-4 bg-primary font-semibold text-center text-primary-foreground py-3 px-4 rounded drop-shadow'>
             <p className='text-xs mb-1'>Visited</p>
-            <p className='text-2xl'>Aug</p>
-            <p>2023</p>
+            <p className='text-2xl'>{trip.travel_date?.toLocaleString([], {month: 'short'})}</p>
+            <p>{trip.travel_date?.getFullYear()}</p>
           </div>
         </section>
 
@@ -118,7 +118,7 @@ const page = async (params: pageProps) => {
                 <BusFront strokeWidth={1.5} className='mr-1.5' />
                 <p>{trip.transport[0].toUpperCase() + trip.transport.slice(1)} · 
                   Arditi Travel{trip.travelling_agency} ·  
-                  {trip.duration_days ? trip.duration_days + 'd' : ''} {trip.duration_hours ? trip.duration_hours + 'h' : ''} {trip.duration_minutes ? trip.duration_minutes + 'm · ' : ' · '}
+                  {trip.duration.days ? trip.duration.days + 'd' : ''} {trip.duration.hours ? trip.duration.hours + 'h' : ''} {trip.duration.minutes ? trip.duration.minutes + 'm · ' : ' · '}
                   {trip.price} {trip.currency}
                 </p>
               </div>
@@ -134,10 +134,9 @@ const page = async (params: pageProps) => {
           <h3 className='font-bold text-2xl mb-2'>Places to visit</h3>
 
           <ul className='list-none grid grid-cols-2 space-y-1'>
-            <li>Durres amphiteatre</li>
-            <li>Venetian Tower of Durres</li>
-            <li>Fatih Mosque</li>
-            <li>Bay of Lalzi</li>
+            {trip.places_2_visit?.map((p2v) => {
+              return <li>{p2v}</li>
+            })}
           </ul>
         </section>
 

@@ -1,14 +1,15 @@
 import { Trash2 } from 'lucide-react';
 import { FC, useState } from 'react'
-import { Button } from './ui/button'
-import { Input } from './ui/input'
+import { Button } from '../ui/button'
+import { Input } from '../ui/input'
 
 interface AddableFieldsProps {
     placeholder?: string,
     maxlength?: number,
+    onFieldChange: (field: string[]) => void,
 }
 
-const AddableFields: FC<AddableFieldsProps> = ({ placeholder, maxlength = 64 }) => {
+const AddableFields: FC<AddableFieldsProps> = ({ placeholder, maxlength = 64, onFieldChange }) => {
     const [inputValue, setInputValue] = useState('');
     const [savedValues, setSavedValues] = useState<string[]>([]);
 
@@ -19,6 +20,7 @@ const AddableFields: FC<AddableFieldsProps> = ({ placeholder, maxlength = 64 }) 
     const handleAddClick = () => {
         if (inputValue.trim() !== '') {
             setSavedValues([...savedValues, inputValue]);
+            onFieldChange([...savedValues, inputValue]);
             setInputValue(''); // Clear the input field after saving
         }
     };
@@ -27,6 +29,7 @@ const AddableFields: FC<AddableFieldsProps> = ({ placeholder, maxlength = 64 }) 
         const newSavedValues = [...savedValues];
         newSavedValues.splice(index, 1);
         setSavedValues(newSavedValues);
+        onFieldChange(newSavedValues);
       };
 
     return (
