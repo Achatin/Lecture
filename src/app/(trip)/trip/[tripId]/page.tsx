@@ -10,6 +10,7 @@ import { Badge, badgeVariants } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { BusFront, Heart, MessageCircle, Share } from 'lucide-react';
 import Rating from '@/components/trip-form/Rating';
+import Embed from '@/components/Embed';
 
 interface pageProps {
   params: {
@@ -157,7 +158,13 @@ const page = async (params: pageProps) => {
         </section>
 
         <section id="accomodation" className='my-6'>
-          <h3 className='font-bold text-2xl mb-4'>Accomodation</h3>          
+          <h3 className='font-bold text-2xl pb-2'>Accomodation</h3>
+          <Embed descriptionLength={3} data={{
+            image: trip.accommodation?.image,
+            title: trip.accommodation?.title,
+            description: trip.accommodation?.description,
+            url: trip.accommodation?.url,
+          }} /> 
         </section>
 
         <Separator className='my-4' />

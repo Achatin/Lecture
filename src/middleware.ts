@@ -10,7 +10,7 @@ export default withAuth(
         const isAuth = await getToken({ req });
         const isLoginPage = pathname.startsWith('/login');
 
-        const sensitiveRoutes = ['/dashboard'];
+        const sensitiveRoutes = ['/settings'];
         const isAccessingSensitiveRoute = sensitiveRoutes.some((route) => pathname.startsWith(route));
 
         if (isLoginPage) {
@@ -29,7 +29,7 @@ export default withAuth(
 
         if (pathname === '/') {
             console.log("PATHNAME")
-            return NextResponse.redirect(new URL('/dashboard', req.url));
+            return NextResponse.redirect(new URL('/trips', req.url));
         }
     }, {
         callbacks: {
@@ -41,5 +41,5 @@ export default withAuth(
 )
 
 export const config = {
-    matcher: ['/', '/login', '/dashboard/:path'],
+    matcher: ['/', '/login', '/trips/:path'],
 }

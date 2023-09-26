@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { Star } from "lucide-react";
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 
 
 type RatingLabels = {

@@ -38,8 +38,8 @@ import countries from '../../datasets/countries.json'
 import { Session } from 'next-auth'
 import ButtonLoading from './ui/buttonLoading'
 import ImageSelector from './trip-form/ImageSelector'
-import AccomodationCard from './trip-form/AccomodationCard'
 import { ScrollArea } from './ui/scroll-area'
+import AccommodationCard from './trip-form/AccommodationCard'
 
 
 interface CreateTripFormProps {
@@ -61,7 +61,7 @@ const CreateTripForm: FC<CreateTripFormProps> = ({session}) => {
     const destLocation = form.watch('destination_location');
     const rating = form.watch('rating');
     const date = form.watch('travel_date');
-    const accomodation = form.watch('accommodation');
+    const accommodation = form.watch('accommodation');
 
     async function onSubmit(values: z.infer<typeof postTripValidator>) {
         setIsLoading(true);
@@ -86,7 +86,7 @@ const CreateTripForm: FC<CreateTripFormProps> = ({session}) => {
     
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-8">
+            <form onSubmit={form.handleSubmit(onSubmit)} onInvalid={(event) => console.log(event)} className="space-y-4 mt-8">
                 <h3 className='text-lg font-semibold mb-3'>Where did you travel?</h3>
 
                 <div className='relative grid grid-cols-2 space-x-4'>
@@ -167,9 +167,7 @@ const CreateTripForm: FC<CreateTripFormProps> = ({session}) => {
                 </div>
 
                 {destLocation && search4Image ? (
-                    <FormElement form={form} name="image" label='Image that best depicts your experience' className={`${form.getValues('destination_location') ? 'animate-in fade-in' : 'hidden' }`}>
-                        <ImageSelector keyword={destLocation} onSelectImage={(imageUrl) => form.setValue('image', imageUrl)} />
-                    </FormElement>
+                    <ImageSelector keyword={destLocation} onSelectImage={(imageUrl) => form.setValue('image', imageUrl)} />
                 ) : (
                     <div>
                         <FormLabel>Picture</FormLabel>
@@ -181,17 +179,11 @@ const CreateTripForm: FC<CreateTripFormProps> = ({session}) => {
                     </div>
                 )}
 
-                <FormElement form={form} name="rating" label='Overall rating' className={`${form.getValues('destination_location') && search4Image ? 'animate-in fade-in' : 'hidden' }`}>
                     <Rating onRatingSelect={(rating) => form.setValue('rating', rating)}/>
-                </FormElement>
 
-                <FormElement form={form} name="places_2_visit" label='Places to visit' className={`${form.getValues('destination_location') && search4Image ? 'animate-in fade-in' : 'hidden' }`}>
                     <AddableFields placeholder='Grand Canyon' maxlength={60} onFieldChange={(field) => form.setValue('places_2_visit', field)} />
-                </FormElement>
 
-                <FormElement form={form} name="tips" label='Helpful tips' className={`${form.getValues('destination_location') && search4Image ? 'animate-in fade-in' : 'hidden' }`}>
                     <AddableFields placeholder='You should know that...' maxlength={300} onFieldChange={(field) => form.setValue('tips', field)} />
-                </FormElement>
 
                 <FormElement form={form} name="description" label='Describe your experience' className={`${form.getValues('destination_location') && search4Image ? 'animate-in fade-in' : 'hidden' }`}>
                     <Textarea placeholder='Anything else you would like to mention...' maxLength={2000} />
@@ -370,15 +362,13 @@ const CreateTripForm: FC<CreateTripFormProps> = ({session}) => {
                                     variant="outline"
                                     role="combobox"
                                     className={cn(
-                                        "w-[200px] justify-between",
+                                        "w-[100px] justify-between",
                                         !field.value && "text-muted-foreground"
                                     )}
                                     >
-                                    {field.value
-                                        ? currencies.find(
-                                            (currency) => currency.name === field.value
-                                        )?.name
-                                        : "EUR"}
+                                    {field.value ? 
+                                        currencies.find((currency) => currency.cc === field.value)?.symbol
+                                    : "Currency"}
                                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                     </Button>
                                 </FormControl>
@@ -470,8 +460,14 @@ const CreateTripForm: FC<CreateTripFormProps> = ({session}) => {
                 </div>
 
                 {nightstay ? (
-                    <AccomodationCard form={form} onAccomodationData={(data) => form.setValue('accommodation', data)} />
+                    <AccommodationCard form={form} />
                 ) : null}
+
+                <p>{accommodation?.image}</p>
+                <p>{accommodation?.title}</p>
+                <p>{accommodation?.description}</p>
+                <p>{accommodation?.url}</p>
+                <p>{accommodation?.rating}</p>
 
                 <div className='flex space-x-4 py-4'>
                     {isLoading ? (

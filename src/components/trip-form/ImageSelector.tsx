@@ -32,31 +32,29 @@ const ImageSelector: FC<ImageSelectorProps> = ({ keyword, onSelectImage }) => {
   };
 
   return (
-    <form> {/* Wrap the component in a form */}
-      <div className="overflow-x-auto">
-        <div className="flex gap-x-1 w-max">
-          {imageUrls.map((imageUrl, index) => (
-            <div key={index} onClick={() => onImageSelect(imageUrl)} className='m-1.5'> {/* Call onImageSelect with the imageUrl */}
-              {imageLoading ? (
-                <Skeleton className='h-36 w-48' />
-              ) : null}
+    <div className="overflow-x-auto">
+      <div className="flex gap-x-1 w-max">
+        {imageUrls.map((imageUrl, index) => (
+          <div key={index} onClick={() => onImageSelect(imageUrl)} className='m-1.5'> {/* Call onImageSelect with the imageUrl */}
+            {imageLoading ? (
+              <Skeleton className='h-36 w-48' />
+            ) : null}
 
-              <Image
-                loading='eager'
-                onLoad={() => setImageLoading(false)}
-                src={imageUrl}
-                alt={`thumbnail picture of ${keyword}`}
-                width={200}
-                height={200}
-                className={`cursor-pointer rounded h-36 w-full
-                    ${imageLoading ? 'hidden' : ''}
-                    ${imageUrl === selectedImageUrl ? 'outline outline-offset-2 outline-[3px] outline-primary' : ''}`}
-              />
-            </div>
-          ))}
-        </div>
+            <Image
+              loading='eager'
+              onLoad={() => setImageLoading(false)}
+              src={imageUrl}
+              alt={`thumbnail picture of ${keyword}`}
+              width={200}
+              height={200}
+              className={`cursor-pointer rounded h-36 w-full
+                  ${imageLoading ? 'hidden' : ''}
+                  ${imageUrl === selectedImageUrl ? 'outline outline-offset-2 outline-[3px] outline-primary' : ''}`}
+            />
+          </div>
+        ))}
       </div>
-    </form>
+    </div>
   );
 };
 

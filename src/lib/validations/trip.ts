@@ -21,10 +21,10 @@ export const postTripValidator = z.object({
     image: z.string(),
     description: z.string().optional(),
     accommodation: z.object({
-        url: z.string().url().optional(),
+        url: z.string().optional(),
         image: z.string().optional(),
-        title: z.number().min(0).optional(),
-        description: z.string().min(1).max(10).optional(),
+        title: z.string().optional(),
+        description: z.string().optional(),
         rating: z.number().min(1).max(5).optional(),
     }).optional(),
 });
@@ -47,7 +47,7 @@ export const tripValidator = z.object({
         days: z.coerce.number().min(0).optional(),
         hours: z.coerce.number().min(0).max(23).optional(),
         minutes: z.coerce.number().min(0).max(59).optional(),
-    }),
+    }).optional(),
     price: z.coerce.number().min(0).optional(),
     currency: z.string().min(1).max(10).optional(),
     travel_date: z.coerce.date().optional(),
@@ -57,10 +57,10 @@ export const tripValidator = z.object({
     image: z.string(),
     description: z.string().optional(),
     accommodation: z.object({
-        url: z.string().url().optional(),
+        url: z.string().optional(),
         image: z.string().optional(),
-        title: z.number().min(0).optional(),
-        description: z.string().min(1).max(10).optional(),
+        title: z.string().optional(),
+        description: z.string().optional(),
         rating: z.number().min(1).max(5).optional(),
     }).optional(),
 });
